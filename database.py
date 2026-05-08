@@ -71,3 +71,46 @@ def get_passwords():
         )
 
     return decrypted_rows
+
+def delete_password(website):
+    """
+    Deletes a password entry by website name.
+    """
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    DELETE FROM passwords
+    WHERE website = ?
+    """, (website,))
+
+    conn.commit()
+    conn.close()
+
+def search_password(website):
+    """
+    Searches for passwords by website.
+    """
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT website, username, password
+    FROM passwords
+    WHERE website = ?
+    """, (website,))
+
+    row = cursor.fetchone()
+
+    conn.close()
+
+    if row:
+        website, username, encrypted_password = row
+
+        decrypted_password = decrypt_password(encrypted_password)
+
+        return (website, username, decrypted_password)
+
+    return None
