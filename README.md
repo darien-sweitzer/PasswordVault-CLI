@@ -28,6 +28,14 @@ python main.py
 
 ![Main Menu](screenshots/main-menu.png)
 
+### Password Vault
+
+![Password Search](screenshots/password-vault.png)
+
+### Password Add
+
+![Password Search](screenshots/password-add.png)
+
 ### Password Search
 
 ![Password Search](screenshots/password-search.png)
