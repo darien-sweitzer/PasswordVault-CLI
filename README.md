@@ -21,3 +21,17 @@ pip install -r requirements.txt
 
 ## Run
 python main.py
+
+## Screenshots
+
+### Main Menu
+
+![Main Menu](screenshots/main-menu.png)
+
+### Password Search
+
+![Password Search](screenshots/password-search.png)
+
+### Password Generator
+
+![Password Generator](screenshots/password-generator.png)
