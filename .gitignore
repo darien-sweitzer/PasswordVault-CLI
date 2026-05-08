@@ -4,3 +4,5 @@ __pycache__/
 passwords.db
 .env
 key.key
+secret.key
+master.hash

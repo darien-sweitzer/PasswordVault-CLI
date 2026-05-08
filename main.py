@@ -11,6 +11,12 @@ from database import (
     search_password
 )
 
+from auth import (
+    master_password_exists,
+    save_master_password,
+    verify_master_password
+)
+
 from utils import generate_password
 from getpass import getpass
 
@@ -84,9 +90,57 @@ def delete_password_flow():
 
     print("Password deleted if it existed.")
 
+def authenticate():
+    """
+    Handles master password setup and login.
+    """
+
+    if not master_password_exists():
+        print("No master password found.")
+        print("Create a new master password.")
+
+        while True:
+            password = getpass("New master password: ")
+            confirm = getpass("Confirm password: ")
+
+            if password != confirm:
+                print("Passwords do not match.")
+                continue
+
+            if len(password) < 8:
+                print(
+                    "Password must be at least 8 characters."
+                )
+                continue
+
+            save_master_password(password)
+
+            print("Master password created.")
+            return
+
+    attempts = 3
+
+    while attempts > 0:
+        password = getpass("Enter master password: ")
+
+        if verify_master_password(password):
+            print("Access granted.")
+            return
+
+        attempts -= 1
+
+        print(
+            f"Incorrect password. "
+            f"{attempts} attempts remaining."
+        )
+
+    print("Too many failed attempts.")
+    exit()
+
 
 def main():
     create_table()
+    authenticate()
 
     while True:
         menu()
