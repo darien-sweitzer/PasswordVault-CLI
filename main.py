@@ -17,9 +17,17 @@ from auth import (
     verify_master_password
 )
 
-from utils import generate_password
-from getpass import getpass
+from colorama import init, Fore
+import pyperclip
 
+from utils import (
+    generate_password,
+    check_password_strength
+)
+from getpass import getpass
+from logger import log_action
+
+init(autoreset=True)
 
 def menu():
     print("\n=== SecurePass CLI ===")
@@ -44,8 +52,15 @@ def add_password_flow():
         print(f"Generated Password: {password}")
     else:
         password = getpass("Password: ")
+        strength = check_password_strength(password)
+        print(
+            Fore.CYAN +
+            f"Password Strength: {strength}"
+        )
+        
 
     add_password(website, username, password)
+    log_action(f"Added password for {website}")
 
     print("Password stored securely.")
 
@@ -54,16 +69,16 @@ def view_passwords_flow():
     passwords = get_passwords()
 
     if not passwords:
-        print("No passwords stored.")
+        print(Fore.YELLOW + "No passwords stored.")
         return
 
-    print("\nStored Passwords:\n")
+    print(Fore.CYAN + "\nStored Passwords:\n")
 
     for website, username, password in passwords:
-        print(f"Website: {website}")
-        print(f"Username: {username}")
-        print(f"Password: {password}")
-        print("-" * 30)
+        print(Fore.GREEN + f"Website: {website}")
+        print(Fore.WHITE + f"Username: {username}")
+        print(Fore.MAGENTA + f"Password: {password}")
+        print(Fore.BLUE + "-" * 30)
 
 
 def search_password_flow():
@@ -79,6 +94,18 @@ def search_password_flow():
         print(f"Username: {username}")
         print(f"Password: {password}")
 
+        copy_choice = input(
+            "Copy password to clipboard? (y/n): "
+        ).lower()
+
+        if copy_choice == "y":
+            pyperclip.copy(password)
+
+            print(
+                Fore.GREEN +
+                "Password copied to clipboard."
+            )
+
     else:
         print("No matching password found.")
 
@@ -87,6 +114,7 @@ def delete_password_flow():
     website = input("Enter website to delete: ")
 
     delete_password(website)
+    log_action(f"Deleted password for {website}")
 
     print("Password deleted if it existed.")
 
