@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+passwords.db
+.env
+key.key
