@@ -2,6 +2,10 @@
 
 A secure command-line password manager built with Python.
 
+Python-based secure password manager implementing encryption (Fernet), bcrypt authentication, and SQLite
+database storage. Supports CRUD operations for credentials, password generation, strength validation, and clipboard
+integration via a modular CLI architecture.
+
 ## Features
 - Encrypted password storage
 - Master password authentication
